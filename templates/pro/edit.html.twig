@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pro{% endblock %}
+
+{% block body %}
+    <h1>Edit Pro</h1>
+
+    {{ include('pro/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('pro_index') }}">back to list</a>
+
+    {{ include('pro/_delete_form.html.twig') }}
+{% endblock %}

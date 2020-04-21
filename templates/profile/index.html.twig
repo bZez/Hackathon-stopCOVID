@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FrontController!{% endblock %}
+
+{% block body %}
+    <!-- Modal Calendar -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content rounded-0 border-0 shadow-sm">
+                <div class="modal-header border-0">
+                    <h4 class="modal-title text-main" id="exampleModalLabel">Planifier</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="cal"></div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm bg-main text-white"><i class="fas fa-calendar-alt"></i> Planifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" style="width: 100vw;height: 300px;"></div>
+    <div class="container" style="position:relative;margin-top: -50px;z-index:1001">
+        <div class="row align-items-center bg-white p-3 rounded shadow-sm mt-3 ml-2 mr-2">
+            <div class="col-12 col-md-6">
+                <div class="col-12 text-center text-md-left">
+                    <h4 class="font-weight-semibold text-main mb-0">{{ app.user.firstname|capitalize ~' '~ app.user.lastname|upper }}</h4>
+                    <h6 class="text-dark text-black-50"><span
+                                class="font-weight-semibold ">N°SS: </span>{{ app.user.insee }}</h6>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="col-12 text-center text-md-right">
+                    <a href="{{ path('suivi') }}" class="btn bg-main text-white font-weight-semibold d-inline-block"><i
+                                class="fas fa-history"></i> Completer mon suivi</a>{#
+                    <label class="fileContainer btn bg-main text-white font-weight-semibold mt-3 mt-sm-0 mb-0"><i
+                                class="fas fa-notes-medical"></i> Ordonnance
+                        <input type="file"/>
+                    </label>#}
+                    <form name="ordo" method="post" enctype="multipart/form-data" class="d-inline-block">
+                        <div class="form-group mb-0">
+                            <label class="fileContainer btn bg-main text-white font-weight-semibold mt-3 mt-sm-3 mt-md-0 mb-0"><i
+                                        class="fas fa-notes-medical"></i> Ajouter une ordonnance
+                                <input type="file" id="ordo_file" name="ordo[file]" required="required"/>
+                            </label>
+                        </div>
+                        {{ form_widget(formOrdo._token) }}
+                    </form>
+                    {# <a href="{{ path('suivi') }}" class="btn bg-main text-white font-weight-semibold mt-3 mt-sm-0"><i
+                                 class="fas fa-notes-medical"></i> Ordonnance</a>#}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-thermometer fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Aucun suivi en cours</h6>
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold "><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-tablets fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Aucune livraison prévue</h6>
+                    <img src="https://www.alfredetnestor.com/static/media/logoFooter.67eea717.svg" alt="" width="100%">
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold mt-3" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-calendar-alt fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Vous n'avez pas de rendez-vous</h6>
+                    <img src="https://wydden.com/wp-content/uploads/2016/01/Logo-Doctolib-300x93.png" alt="" height="35">
+                    <br>
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold mt-3" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Derniers suivis
+                    </h6>
+                    <hr class="">
+                    <ul class="list-unstyled">
+                        {% for suivi in suivis[:3] %}
+                            <li class="border-bottom pb-3">
+                                <div class="row text-center">
+                                    {% for k,nom in suivi.resultat %}
+                                        <div class="col">
+                                            <small class="text-main"><b>{{ nom|keys[0]|capitalize }}: </b></small>
+                                            {% for resultat in nom %}
+                                                {% if resultat is same as ('good') %}
+                                                    <h2><i class="fas fa-thumbs-up text-main"></i></h2>
+                                                {% elseif resultat is same as ('bad') %}
+                                                    <h2><i class="fas fa-thumbs-down text-danger"></i></h2>
+                                                {% else %}
+                                                    <h2>{{ resultat }}°</h2>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <small class="font-weight-semibold">{{ suivi.at|date('d-m-Y à h:i:s') }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Dernières livraisons</h6>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Derniers
+                        rendez-vous</h6>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('input[type=file]').change(function () {
+            $(this).parents('form').submit();
+        });
+        $("#cal").simpleCalendar({
+            months: ['janvier','février','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
+            days: ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
+        });
+    </script>
+    <script>
+        var map = L.map('map').fitWorld();
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            minZoom: 16,
+            attribution: '© <span class="text-lobster">StopContagion</span>',
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1
+        }).addTo(map);
+
+        function onLocationFound(e) {
+            var radius = e.accuracy / 2;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("<span class='text-lobster'>StopContagion</span>").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        function onLocationError(e) {
+            alert(e.message);
+        }
+
+        map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+
+        map.locate({setView: true, maxZoom: 16});
+    </script>
+
+{% endblock %}

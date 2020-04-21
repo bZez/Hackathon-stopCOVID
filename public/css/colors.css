@@ -1,0 +1,15 @@
+.text-main {
+    color:#2FBEC6;
+}
+.bg-main {
+    background-color: #4BBFCE;
+}
+.bg-radial-main {
+    background: radial-gradient(#4BBFCE,#45a5b4) no-repeat;
+}
+.bg-linear-main {
+    background-image: url("https://assets.doctolib.fr/assets/patient/cover/cover-fr-973bcf95feaf0a034f59ebef00b73d4ab3a7965c746780cb29d0399bc60b4961.png");
+}
+.bg-light {
+    background-color: #eef2f6!important;
+}

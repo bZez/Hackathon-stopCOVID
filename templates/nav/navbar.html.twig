@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-main">
+    <a class="navbar-brand text-lobster" href="{{ path('profile')}}">
+        <i class="fas fa-virus"></i> StopContagion
+    </a>
+    {% if app.user %}
+        <a href="{{ path('app_logout') }}" style="opacity: .8"
+           class="btn btn-sm btn-outline-light d-inline-block d-md-none">
+            <small><i class="fas fa-sign-out-alt"></i> Déconnexion</small>
+        </a>
+        <button class="navbar-toggler border-0 text-white" type="button" data-toggle="collapse"
+                data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-user"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+
+            <div class="d-block d-md-none">
+                <hr class="bg-white">
+                <h5 class="text-white mb-0"><i class="far fa-user-circle"></i> {{ app.user.username|capitalize }} - </h5>
+                <small class="text-white h6 small">{% if app.user.insee is defined %}{{ app.user.insee }}{% else %}{{ app.user.siret }}{% endif %}</small>
+            </div>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link h6 mb-0 font-weight-semibold" href="{{ path('ordo_index') }}"><i class="fas fa-folder-open"></i>&nbsp;
+                        Mes ordonnances <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link h6 mb-0 font-weight-semibold" href="#"><i class="fas fa-tablets"></i> Mes livraisons</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link h6 mb-0 font-weight-semibold" href="#"><i class="fas fa-cogs"></i> Paramètres</a>
+                </li>
+            </ul>
+            <a href="{{ path('app_logout') }}" style="opacity: .8"
+               class="btn btn-sm btn-outline-light d-none d-md-inline-block">
+                <small><i class="fas fa-sign-out-alt"></i> Déconnexion</small>
+            </a> &nbsp;
+            <span class="navbar-text">
+                <button class="btn btn-sm btn-outline-light "><small><i class="fas fa-phone"></i> Dr. QUISOIGNE</small></button> <br>
+
+    </span>
+        </div>
+    {% endif %}
+</nav>

@@ -1,0 +1,55 @@
+security:
+    encoders:
+        App\Entity\Patient:
+            algorithm: bcrypt
+        App\Entity\Pro:
+            algorithm: bcrypt
+
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_patient_provider:
+            entity:
+                class: App\Entity\Patient
+                property: username
+        app_pro_provider:
+            entity:
+                class: App\Entity\Pro
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: lazy
+            provider: app_patient_provider
+            guard:
+                authenticators:
+                    - App\Security\FrontAuthenticator
+            logout:
+                path: app_logout
+        pro:
+            anonymous: lazy
+            provider: app_pro_provider
+            guard:
+                authenticators:
+                    - App\Security\FrontAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/p, roles: ['ROLE_ADMIN','ROLE_PRO','ROLE_USER'] }
+         - { path: ^/pro, roles: ROLE_PRO }

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pro{% endblock %}
+
+{% block body %}
+    <div class="container" >
+        <div class="row align-items-center bg-white p-3 rounded shadow-sm mt-3 ml-2 mr-2">
+            <h3 class="text-main"><i class="fas fa-user-md "></i> {{ app.user.firstname|capitalize ~' '~ app.user.lastname|upper}}</h3>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ pro.id }}</td>
+                </tr>
+                <tr>
+                    <th>Uuid</th>
+                    <td>{{ pro.uuid }}</td>
+                </tr>
+                <tr>
+                    <th>Roles</th>
+                    <td>{{ pro.roles ? pro.roles|json_encode : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td>{{ pro.password }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <a href="{{ path('pro_index') }}">back to list</a>
+
+            <a href="{{ path('pro_edit', {'id': pro.id}) }}">edit</a>
+
+            {{ include('pro/_delete_form.html.twig') }}
+        </div>
+       {# <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-thermometer fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Aucun suivi en cours</h6>
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold "><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-tablets fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Aucune livraison prévue</h6>
+                    <img src="https://www.alfredetnestor.com/static/media/logoFooter.67eea717.svg" alt="" width="100%">
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold mt-3" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 text-center p-5">
+                    <i class="fas fa-calendar-alt fa-4x text-main"></i>
+                    <h6 class="font-weight-semibold text-dark mt-3">Vous n'avez pas de rendez-vous</h6>
+                    <img src="https://wydden.com/wp-content/uploads/2016/01/Logo-Doctolib-300x93.png" alt="" height="35">
+                    <br>
+                    <button class="btn btn-sm bg-main text-white font-weight-semibold mt-3" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Derniers suivis
+                    </h6>
+                    <hr class="">
+                    <ul class="list-unstyled">
+                        {% for suivi in suivis[:3] %}
+                            <li class="border-bottom pb-3">
+                                <div class="row text-center">
+                                    {% for k,nom in suivi.resultat %}
+                                        <div class="col">
+                                            <small class="text-main"><b>{{ nom|keys[0]|capitalize }}: </b></small>
+                                            {% for resultat in nom %}
+                                                {% if resultat is same as ('good') %}
+                                                    <h2><i class="fas fa-thumbs-up text-main"></i></h2>
+                                                {% elseif resultat is same as ('bad') %}
+                                                    <h2><i class="fas fa-thumbs-down text-danger"></i></h2>
+                                                {% else %}
+                                                    <h2>{{ resultat }}°</h2>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <small class="font-weight-semibold">{{ suivi.at|date('d-m-Y à h:i:s') }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Dernières livraisons</h6>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="col-12 ">
+                    <h6 class="font-weight-semibold text-dark mt-3"><i class="fas fa-chevron-up"></i> Derniers
+                        rendez-vous</h6>
+                    <hr>
+                </div>
+            </div>
+        </div>#}
+    </div>
+
+{% endblock %}

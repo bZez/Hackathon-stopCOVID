@@ -1,0 +1,53 @@
+html,body {
+    margin: 0;
+    padding: 0;
+    overflow-x:hidden ;
+}
+.text-lobster {
+    font-family: 'Lobster', cursive;
+}
+.font-weight-semibold {
+    font-weight: 600;
+}
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+    box-shadow: inset 0 -1px 0 #ddd;
+}
+#ov-first-load {
+    z-index: 10000;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    color: white;
+}
+.fileContainer [type=file] {
+    z-index: -1;
+    cursor: inherit;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    display: none;
+}
+
+.calendar .day.today,.calendar .event-container,.calendar .filler{
+    background: #4BBFCE;
+}

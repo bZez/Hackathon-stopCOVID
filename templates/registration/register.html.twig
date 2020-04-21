@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row mt-md-4 p-3 p-md-0">
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 m-auto rounded bg-white text-center p-4 shadow-sm" >
+                <h5 class="h5 font-weight-normal text-dark" data-toggle="collapse" data-target=".login-form-collapse" aria-expanded="false">Nouveau sur <span class="text-lobster ">StopContagion</span> ?</h5>
+                <small class=" text-black-50">Remplissez le formulaire pour continuer</small>
+                {% if not registrationForm.vars.valid %}
+                        {# Loop through every form item #}
+                        {% for child in registrationForm.children %}
+                            {# Display the errors of the form item #}
+                            {%for error in child.vars.errors%}
+                                <div class="mb-3 mt-3 small rounded alert-danger p-1">
+                                    {{error.message}}
+                                </div>
+                            {%endfor%}
+                        {%endfor%}
+                {%endif%}
+               <div class="collapse show login-form-collapse">
+                   {{ form_start(registrationForm) }}
+                   <div class="input-group mb-3 mt-3">
+                       <div class="input-group-prepend">
+                           <span class="input-group-text bg-transparent" id="basic-addon1"><i class="fas fa-user"></i></span>
+                       </div>
+                       {{ form_widget(registrationForm.username,{ 'attr': {'class': 'border-left-0 small','placeholder':'Nom d\'utilisateur'} }) }}
+                   </div>
+                   <div class="input-group mb-3">
+                       <div class="input-group-prepend">
+                           <span class="input-group-text bg-transparent" id="basic-addon1"><i class="fas fa-lock"></i></span>
+                       </div>
+                       {{ form_widget(registrationForm.plainPassword,{ 'attr': {'class': 'border-left-0','placeholder':'Choisissez un mot de passe'} }) }}
+                   </div>
+
+                   <small><a href="#">{{ form_widget(registrationForm.agreeTerms) }}</a></small>
+
+                   <button class="btn bg-main font-weight-semibold text-white mt-3">S'ENREGISTRER</button>
+                   {{ form_end(registrationForm) }}
+               </div>
+            </div>
+        </div>
+        <div class="row mt-md-4 p-3 p-md-0">
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 m-auto rounded bg-white text-center p-4 shadow-sm" >
+                <form method="post">
+                    {% if app.user %}
+                        <div class="mb-3 small rounded alert-info p-2">
+                            Vous êtes déjà connecté {{ app.user.username }}. <br>
+                            <a href="{{ path('app_logout') }}" class="text-dark font-weight-semibold"><i class="fas fa-sign-out-alt"></i> Déconnexion ?</a>
+                        </div>
+                    {% endif %}
+
+                    <h5 class="h5 mb-4 font-weight-normal text-dark" data-toggle="collapse" data-target=".login-form-collapse" aria-expanded="false">J'ai un compte <span class="text-lobster ">StopContagion</span></h5>
+                    {#                    <label for="inputUsername">Identifiant <span class="text-muted">(Pseudo, adresse email ou N° de Sécurtié Sociale)</span></label>#}
+
+                    <div class="collapse login-form-collapse">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-transparent" id="basic-addon1"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" id="inputUsername" class="form-control border-left-0" required placeholder="Votre identifiant, n° mobile ou email...">
+                        </div>
+                        {#                    <label for="inputPassword">Mot de passe</label>#}
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-transparent" id="basic-addon2"><i class="fas fa-lock"></i></span>
+                            </div>
+                            <input type="password" name="password" id="inputPassword" class="form-control border-left-0" required placeholder="Votre mot de passe...">
+                        </div>
+
+
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}"
+                        >
+                        <div class="custom-control custom-checkbox mb-4 mt-3 text-left">
+                            <input type="checkbox" name="_remember_me" class="custom-control-input">
+                            <label class="custom-control-label"><span class="h6 text-dark">Je souhaite rester connecté.</span></label>
+                        </div>
+
+                        <button class="btn btn-warning col-12" type="submit">
+                            <span class="h6 font-weight-bold">SE CONNECTER</span>
+                        </button>
+                        <img src="{{ asset('franceconnect.png') }}" alt="" width="100%" style="max-width:250px ">
+                    </div>
+                </form>
+                <div class="mt-3 mb-4">
+                    <button class="pb-3 border-0 bg-transparent">
+                        <span class="pb-3 border-bottom">MOT DE PASSE OUBLIE ?</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
