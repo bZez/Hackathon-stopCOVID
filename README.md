@@ -1,2 +1,1 @@
-# SF5-CRM-Energie
-CRM pour Eco Energie France
+# Base pour les participants Hackathon StopCOVID
